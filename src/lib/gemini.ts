@@ -1,10 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const API_KEY = "AIzaSyBgVeCCbKQ2HSiW0AAVjmNWjbRq_9R3blo";
+const API_KEY = "AIzaSyBhyEIba3KXjflrLsEo-pNJpPxweXT3KcQ";
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-const SYSTEM_PROMPT = `Kamu adalah Golem AI, asisten AI yang sopan, ramah, dan sangat membantu. Kamu diciptakan oleh Stoky untuk membantu pengguna dengan berbagai pertanyaan dan tugas.
+const SYSTEM_PROMPT = `Kamu adalah Golem AI, asisten AI yang sopan, ramah, dan sangat membantu. Kamu diciptakan oleh Rizky Al Santiano untuk membantu pengguna dengan berbagai pertanyaan dan tugas.
 
 Karakteristik kepribadianmu:
 - Selalu sopan dan hormat kepada pengguna
@@ -38,7 +38,7 @@ export async function sendMessage(
 ): Promise<string> {
   try {
     const model = genAI.getGenerativeModel({ 
-      model: imageData ? "gemini-1.5-flash" : "gemini-1.5-flash",
+      model: imageData ? "gemini-3-pro-preview" : "gemini-3-pro-preview",
       systemInstruction: SYSTEM_PROMPT,
     });
 
@@ -114,7 +114,7 @@ export async function streamMessage(
 ): Promise<string> {
   try {
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
+      model: "gemini-3-pro-preview",
       systemInstruction: SYSTEM_PROMPT,
     });
 
