@@ -201,7 +201,7 @@ const Index = () => {
               <span className="text-3xl font-bold text-primary-foreground">S</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Dikembangkan oleh <span className="gradient-text">Stoky</span>
+              Dikembangkan oleh <span className="gradient-text">Rizky Al Santiano</span>
             </h2>
             <p className="text-muted-foreground text-lg mb-8">
               Golem AI dikembangkan dengan penuh dedikasi untuk memberikan pengalaman 
@@ -261,7 +261,7 @@ const Index = () => {
               <span className="font-semibold">Golem AI</span>
             </div>
             <p className="text-muted-foreground text-sm">
-              © 2024 Golem AI. Dikembangkan oleh Stoky.
+              © 2024 Golem AI. Dikembangkan oleh Rizky Al Santiano.
             </p>
           </div>
         </div>
