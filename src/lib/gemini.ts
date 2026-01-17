@@ -1,10 +1,17 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const API_KEY = "AIzaSyBhyEIba3KXjflrLsEo-pNJpPxweXT3KcQ";
+// Mengambil API Key dari environment variable
+const API_KEY = process.env.GEMINI_API_KEY;
 
-const genAI = new GoogleGenerativeAI(API_KEY);
+if (!API_KEY) {
+  console.error("GEMINI_API_KEY is not defined in environment variables");
+  // Di development, Anda bisa memberikan fallback (hanya untuk testing)
+  // throw new Error("GEMINI_API_KEY is not defined in environment variables");
+}
 
-const SYSTEM_PROMPT = `Kamu adalah Golem AI, asisten AI yang sopan, ramah, dan sangat membantu. Kamu diciptakan oleh Stoky untuk membantu pengguna dengan berbagai pertanyaan dan tugas.
+const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
+
+const SYSTEM_PROMPT = `Kamu adalah Golem AI, asisten AI yang sopan, ramah, dan sangat membantu. Kamu diciptakan oleh Rizky Al Santiano untuk membantu pengguna dengan berbagai pertanyaan dan tugas.
 
 Karakteristik kepribadianmu:
 - Selalu sopan dan hormat kepada pengguna
@@ -37,8 +44,15 @@ export async function sendMessage(
   imageData?: { data: string; mimeType: string }
 ): Promise<string> {
   try {
+    if (!genAI) {
+      throw new APIError(
+        "API Key belum dikonfigurasi. Silakan hubungi administrator.",
+        "API_KEY_NOT_CONFIGURED"
+      );
+    }
+
     const model = genAI.getGenerativeModel({ 
-      model: imageData ? "gemini-2.5-pro" : "gemini-2.5-pro",
+      model: imageData ? "gemini-1.5-flash" : "gemini-1.5-flash",
       systemInstruction: SYSTEM_PROMPT,
     });
 
@@ -99,6 +113,11 @@ export async function sendMessage(
       );
     }
     
+    // Check if error is from our custom API_KEY_NOT_CONFIGURED
+    if (error.code === "API_KEY_NOT_CONFIGURED") {
+      throw error;
+    }
+    
     throw new APIError(
       "Maaf, terjadi kesalahan saat memproses pesan Anda. Silakan coba lagi.",
       "UNKNOWN_ERROR"
@@ -113,8 +132,15 @@ export async function streamMessage(
   imageData?: { data: string; mimeType: string }
 ): Promise<string> {
   try {
+    if (!genAI) {
+      throw new APIError(
+        "API Key belum dikonfigurasi. Silakan hubungi administrator.",
+        "API_KEY_NOT_CONFIGURED"
+      );
+    }
+
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.5-pro",
+      model: "gemini-1.5-flash",
       systemInstruction: SYSTEM_PROMPT,
     });
 
@@ -181,6 +207,11 @@ export async function streamMessage(
         "Terlalu banyak permintaan. Silakan tunggu beberapa saat dan coba lagi.",
         "RATE_LIMITED"
       );
+    }
+    
+    // Check if error is from our custom API_KEY_NOT_CONFIGURED
+    if (error.code === "API_KEY_NOT_CONFIGURED") {
+      throw error;
     }
     
     throw new APIError(
